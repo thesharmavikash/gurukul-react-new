@@ -1,71 +1,95 @@
 import { Helmet } from "react-helmet-async";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { ArrowLeft, Trophy, Medal, Star, Filter, Search, Download, GraduationCap } from "lucide-react";
+import { ArrowLeft, Trophy, Medal, Star, Filter, Search, Download, GraduationCap, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { supabase } from "@/integrations/supabase/client";
 
-interface Student {
-  id: number;
-  name: string;
-  rank: string;
-  college: string;
-  exam: "NEET" | "JEE Main" | "JEE Advanced";
+interface StudentResult {
+  id: string;
+  roll_number: string;
+  student_name: string;
+  father_name: string | null;
+  exam_type: string;
   year: number;
-  score?: string;
-  category?: string;
+  rank: number | null;
+  score: string | null;
+  percentile: number | null;
+  college: string | null;
+  photo_url: string | null;
 }
 
 const Results = () => {
   const [selectedExam, setSelectedExam] = useState<string>("all");
   const [selectedYear, setSelectedYear] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const [rollNumberSearch, setRollNumberSearch] = useState("");
+  const [results, setResults] = useState<StudentResult[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [searchedResult, setSearchedResult] = useState<StudentResult | null>(null);
+  const [searching, setSearching] = useState(false);
+  const [searchError, setSearchError] = useState("");
 
   const exams = ["all", "NEET", "JEE Main", "JEE Advanced"];
   const years = ["all", "2024", "2023", "2022", "2021", "2020"];
 
-  const students: Student[] = [
-    // 2024 Results
-    { id: 1, name: "Prachi Kumari", rank: "AIR 1245", college: "AIIMS Delhi", exam: "NEET", year: 2024, score: "705/720" },
-    { id: 2, name: "Harsh Kumar", rank: "AIR 892", college: "IIT Kharagpur", exam: "JEE Advanced", year: 2024, score: "289/360" },
-    { id: 3, name: "Shreya Singh", rank: "AIR 456", college: "IIT Bombay", exam: "JEE Advanced", year: 2024, score: "301/360" },
-    { id: 4, name: "Ansh Patel", rank: "AIR 3421", college: "NIT Patna", exam: "JEE Main", year: 2024, score: "98.2%ile" },
-    { id: 5, name: "Palak Sharma", rank: "AIR 2156", college: "AIIMS Patna", exam: "NEET", year: 2024, score: "685/720" },
-    { id: 6, name: "Aryan Raj", rank: "AIR 1023", college: "IIT Roorkee", exam: "JEE Advanced", year: 2024, score: "278/360" },
-    { id: 7, name: "Nikita Das", rank: "AIR 5678", college: "NIT Trichy", exam: "JEE Main", year: 2024, score: "97.5%ile" },
-    { id: 8, name: "Rahul Verma", rank: "AIR 3890", college: "Government Medical Patna", exam: "NEET", year: 2024, score: "642/720" },
-    { id: 9, name: "Sneha Kumari", rank: "AIR 7823", college: "NIT Rourkela", exam: "JEE Main", year: 2024, score: "96.8%ile" },
-    { id: 10, name: "Vikash Singh", rank: "AIR 1567", college: "IIT BHU", exam: "JEE Advanced", year: 2024, score: "267/360" },
-    
-    // 2023 Results
-    { id: 11, name: "Ananya Verma", rank: "AIR 1890", college: "AIIMS Patna", exam: "NEET", year: 2023, score: "692/720" },
-    { id: 12, name: "Rohit Sharma", rank: "AIR 756", college: "IIT Roorkee", exam: "JEE Advanced", year: 2023, score: "285/360" },
-    { id: 13, name: "Priya Singh", rank: "AIR 4521", college: "NIT Patna", exam: "JEE Main", year: 2023, score: "97.8%ile" },
-    { id: 14, name: "Amit Kumar", rank: "AIR 2345", college: "IIT Guwahati", exam: "JEE Advanced", year: 2023, score: "256/360" },
-    { id: 15, name: "Kavya Rao", rank: "AIR 1123", college: "AIIMS Jodhpur", exam: "NEET", year: 2023, score: "698/720" },
-    { id: 16, name: "Deepak Yadav", rank: "AIR 6789", college: "NIT Durgapur", exam: "JEE Main", year: 2023, score: "96.2%ile" },
-    
-    // 2022 Results
-    { id: 17, name: "Shivam Gupta", rank: "AIR 890", college: "IIT Delhi", exam: "JEE Advanced", year: 2022, score: "290/360" },
-    { id: 18, name: "Ritu Kumari", rank: "AIR 1567", college: "AIIMS Rishikesh", exam: "NEET", year: 2022, score: "688/720" },
-    { id: 19, name: "Manish Thakur", rank: "AIR 5432", college: "NIT Silchar", exam: "JEE Main", year: 2022, score: "97.1%ile" },
-    { id: 20, name: "Pooja Sharma", rank: "AIR 2890", college: "Government Medical Darbhanga", exam: "NEET", year: 2022, score: "656/720" },
-    
-    // 2021 Results
-    { id: 21, name: "Aditya Singh", rank: "AIR 1234", college: "IIT Kanpur", exam: "JEE Advanced", year: 2021, score: "275/360" },
-    { id: 22, name: "Neha Gupta", rank: "AIR 987", college: "AIIMS Delhi", exam: "NEET", year: 2021, score: "702/720" },
-    { id: 23, name: "Saurabh Kumar", rank: "AIR 4567", college: "NIT Patna", exam: "JEE Main", year: 2021, score: "98.0%ile" },
-    
-    // 2020 Results
-    { id: 24, name: "Rajesh Prasad", rank: "AIR 678", college: "IIT Madras", exam: "JEE Advanced", year: 2020, score: "295/360" },
-    { id: 25, name: "Anjali Kumari", rank: "AIR 1456", college: "AIIMS Patna", exam: "NEET", year: 2020, score: "695/720" },
-  ];
+  useEffect(() => {
+    const fetchResults = async () => {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from("student_results")
+        .select("*")
+        .eq("is_published", true)
+        .order("year", { ascending: false });
 
-  const filteredStudents = students.filter((student) => {
-    const matchesExam = selectedExam === "all" || student.exam === selectedExam;
+      if (!error && data) {
+        setResults(data);
+      }
+      setLoading(false);
+    };
+
+    fetchResults();
+  }, []);
+
+  const handleRollNumberSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!rollNumberSearch.trim()) return;
+
+    setSearching(true);
+    setSearchError("");
+    setSearchedResult(null);
+
+    const { data, error } = await supabase
+      .from("student_results")
+      .select("*")
+      .eq("is_published", true)
+      .ilike("roll_number", rollNumberSearch.trim())
+      .maybeSingle();
+
+    if (error) {
+      setSearchError("An error occurred while searching.");
+    } else if (!data) {
+      setSearchError("No result found for this roll number.");
+    } else {
+      setSearchedResult(data);
+    }
+
+    setSearching(false);
+  };
+
+  const clearRollNumberSearch = () => {
+    setRollNumberSearch("");
+    setSearchedResult(null);
+    setSearchError("");
+  };
+
+  const filteredResults = results.filter((student) => {
+    const matchesExam = selectedExam === "all" || student.exam_type === selectedExam;
     const matchesYear = selectedYear === "all" || student.year.toString() === selectedYear;
-    const matchesSearch = student.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         student.college.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesSearch = 
+      student.student_name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      (student.college?.toLowerCase().includes(searchQuery.toLowerCase()) ?? false);
     return matchesExam && matchesYear && matchesSearch;
   });
 
@@ -89,17 +113,17 @@ const Results = () => {
 
   // Statistics
   const stats = {
-    totalSelections: students.length,
-    iitSelections: students.filter(s => s.exam === "JEE Advanced").length,
-    nitSelections: students.filter(s => s.exam === "JEE Main").length,
-    medicalSelections: students.filter(s => s.exam === "NEET").length,
+    totalSelections: results.length,
+    iitSelections: results.filter(s => s.exam_type === "JEE Advanced").length,
+    nitSelections: results.filter(s => s.exam_type === "JEE Main").length,
+    medicalSelections: results.filter(s => s.exam_type === "NEET").length,
   };
 
   return (
     <>
       <Helmet>
         <title>Results | Gurukul Classes Hajipur - Our Achievers</title>
-        <meta name="description" content="View year-wise results of Gurukul Classes students in NEET, JEE Main, and JEE Advanced. Our students consistently achieve top ranks in national level examinations." />
+        <meta name="description" content="View year-wise results of Gurukul Classes students in NEET, JEE Main, and JEE Advanced. Search your result by roll number." />
       </Helmet>
 
       <div className="min-h-screen bg-background">
@@ -114,6 +138,90 @@ const Results = () => {
             <p className="text-secondary-foreground/70 text-lg max-w-2xl mb-8">
               A testament to hard work, dedication, and expert guidance. View our students' achievements across years.
             </p>
+
+            {/* Roll Number Search */}
+            <div className="bg-secondary-foreground/5 border border-secondary-foreground/10 rounded-xl p-6 mb-8">
+              <h3 className="font-semibold text-lg mb-3">Search Your Result</h3>
+              <form onSubmit={handleRollNumberSearch} className="flex flex-col sm:flex-row gap-3">
+                <div className="relative flex-1 max-w-md">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-secondary-foreground/50" />
+                  <Input
+                    placeholder="Enter your roll number..."
+                    value={rollNumberSearch}
+                    onChange={(e) => setRollNumberSearch(e.target.value)}
+                    className="pl-10 bg-secondary-foreground/5 border-secondary-foreground/20 text-secondary-foreground placeholder:text-secondary-foreground/50"
+                  />
+                </div>
+                <Button type="submit" disabled={searching || !rollNumberSearch.trim()}>
+                  {searching ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : null}
+                  Search
+                </Button>
+                {(searchedResult || searchError) && (
+                  <Button type="button" variant="outline" onClick={clearRollNumberSearch}>
+                    Clear
+                  </Button>
+                )}
+              </form>
+
+              {/* Search Result */}
+              {searchError && (
+                <p className="mt-4 text-destructive">{searchError}</p>
+              )}
+
+              {searchedResult && (
+                <div className="mt-6 bg-card rounded-xl p-6 border border-border">
+                  <div className="flex flex-col sm:flex-row gap-6">
+                    <div className={`w-20 h-20 rounded-full bg-gradient-to-br ${getExamColor(searchedResult.exam_type)} flex items-center justify-center text-primary-foreground font-bold text-2xl shrink-0`}>
+                      {searchedResult.student_name.split(" ").map(n => n[0]).join("")}
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex flex-wrap items-center gap-3 mb-2">
+                        <h4 className="font-serif text-xl font-semibold text-foreground">
+                          {searchedResult.student_name}
+                        </h4>
+                        <span className={`px-2 py-1 rounded text-xs font-medium border ${getExamBadgeColor(searchedResult.exam_type)}`}>
+                          {searchedResult.exam_type}
+                        </span>
+                      </div>
+                      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+                        <div>
+                          <span className="text-muted-foreground">Roll Number</span>
+                          <p className="font-semibold text-foreground">{searchedResult.roll_number}</p>
+                        </div>
+                        {searchedResult.father_name && (
+                          <div>
+                            <span className="text-muted-foreground">Father's Name</span>
+                            <p className="font-semibold text-foreground">{searchedResult.father_name}</p>
+                          </div>
+                        )}
+                        {searchedResult.rank && (
+                          <div>
+                            <span className="text-muted-foreground">Rank</span>
+                            <p className="font-semibold text-primary">AIR {searchedResult.rank}</p>
+                          </div>
+                        )}
+                        {searchedResult.score && (
+                          <div>
+                            <span className="text-muted-foreground">Score</span>
+                            <p className="font-semibold text-foreground">{searchedResult.score}</p>
+                          </div>
+                        )}
+                        {searchedResult.college && (
+                          <div className="sm:col-span-2">
+                            <span className="text-muted-foreground">College</span>
+                            <p className="font-semibold text-foreground">{searchedResult.college}</p>
+                          </div>
+                        )}
+                        <div>
+                          <span className="text-muted-foreground">Year</span>
+                          <p className="font-semibold text-foreground">{searchedResult.year}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
 
             {/* Quick Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -195,7 +303,7 @@ const Results = () => {
           <div className="container-narrow px-4">
             <div className="flex items-center justify-between mb-8">
               <p className="text-muted-foreground">
-                Showing <span className="font-semibold text-foreground">{filteredStudents.length}</span> results
+                Showing <span className="font-semibold text-foreground">{filteredResults.length}</span> results
               </p>
               <Button variant="outline" size="sm">
                 <Download className="w-4 h-4 mr-2" />
@@ -203,7 +311,11 @@ const Results = () => {
               </Button>
             </div>
 
-            {filteredStudents.length === 0 ? (
+            {loading ? (
+              <div className="flex items-center justify-center py-16">
+                <Loader2 className="w-8 h-8 animate-spin text-primary" />
+              </div>
+            ) : filteredResults.length === 0 ? (
               <div className="text-center py-16">
                 <GraduationCap className="w-16 h-16 text-muted-foreground/50 mx-auto mb-4" />
                 <h3 className="text-xl font-semibold text-foreground mb-2">No results found</h3>
@@ -211,25 +323,25 @@ const Results = () => {
               </div>
             ) : (
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-                {filteredStudents.map((student, index) => (
+                {filteredResults.map((student, index) => (
                   <div
                     key={student.id}
                     className="bg-card rounded-xl overflow-hidden shadow-card hover:shadow-large transition-all group animate-fade-in"
                     style={{ animationDelay: `${index * 0.03}s` }}
                   >
                     {/* Gradient Header */}
-                    <div className={`h-2 bg-gradient-to-r ${getExamColor(student.exam)}`} />
+                    <div className={`h-2 bg-gradient-to-r ${getExamColor(student.exam_type)}`} />
                     
                     <div className="p-5">
                       {/* Avatar & Name */}
                       <div className="flex items-center gap-3 mb-4">
-                        <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${getExamColor(student.exam)} flex items-center justify-center text-primary-foreground font-bold group-hover:scale-110 transition-transform`}>
-                          {student.name.split(" ").map(n => n[0]).join("")}
+                        <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${getExamColor(student.exam_type)} flex items-center justify-center text-primary-foreground font-bold group-hover:scale-110 transition-transform`}>
+                          {student.student_name.split(" ").map(n => n[0]).join("")}
                         </div>
                         <div>
-                          <h3 className="font-semibold text-foreground">{student.name}</h3>
-                          <span className={`inline-block px-2 py-0.5 rounded text-xs font-medium border ${getExamBadgeColor(student.exam)}`}>
-                            {student.exam}
+                          <h3 className="font-semibold text-foreground">{student.student_name}</h3>
+                          <span className={`inline-block px-2 py-0.5 rounded text-xs font-medium border ${getExamBadgeColor(student.exam_type)}`}>
+                            {student.exam_type}
                           </span>
                         </div>
                       </div>
@@ -237,21 +349,29 @@ const Results = () => {
                       {/* Details */}
                       <div className="space-y-2 text-sm">
                         <div className="flex justify-between">
-                          <span className="text-muted-foreground">Rank</span>
-                          <span className="font-semibold text-primary">{student.rank}</span>
+                          <span className="text-muted-foreground">Roll No.</span>
+                          <span className="font-mono text-foreground">{student.roll_number}</span>
                         </div>
+                        {student.rank && (
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">Rank</span>
+                            <span className="font-semibold text-primary">AIR {student.rank}</span>
+                          </div>
+                        )}
                         {student.score && (
                           <div className="flex justify-between">
                             <span className="text-muted-foreground">Score</span>
                             <span className="font-medium text-foreground">{student.score}</span>
                           </div>
                         )}
-                        <div className="flex justify-between">
-                          <span className="text-muted-foreground">College</span>
-                          <span className="font-medium text-foreground text-right max-w-[60%] truncate" title={student.college}>
-                            {student.college}
-                          </span>
-                        </div>
+                        {student.college && (
+                          <div className="flex justify-between">
+                            <span className="text-muted-foreground">College</span>
+                            <span className="font-medium text-foreground text-right max-w-[60%] truncate" title={student.college}>
+                              {student.college}
+                            </span>
+                          </div>
+                        )}
                         <div className="flex justify-between">
                           <span className="text-muted-foreground">Year</span>
                           <span className="font-medium text-foreground">{student.year}</span>
