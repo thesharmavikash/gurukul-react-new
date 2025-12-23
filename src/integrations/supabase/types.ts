@@ -14,6 +14,117 @@ export type Database = {
   }
   public: {
     Tables: {
+      downloads: {
+        Row: {
+          category: string
+          created_at: string
+          created_by: string | null
+          description: string | null
+          file_url: string
+          id: string
+          is_published: boolean | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          file_url: string
+          id?: string
+          is_published?: boolean | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          file_url?: string
+          id?: string
+          is_published?: boolean | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      faculty: {
+        Row: {
+          about: string | null
+          created_at: string
+          created_by: string | null
+          experience: string | null
+          id: string
+          is_published: boolean | null
+          name: string
+          photo_url: string | null
+          qualification: string | null
+          subjects: string[] | null
+          updated_at: string
+        }
+        Insert: {
+          about?: string | null
+          created_at?: string
+          created_by?: string | null
+          experience?: string | null
+          id?: string
+          is_published?: boolean | null
+          name: string
+          photo_url?: string | null
+          qualification?: string | null
+          subjects?: string[] | null
+          updated_at?: string
+        }
+        Update: {
+          about?: string | null
+          created_at?: string
+          created_by?: string | null
+          experience?: string | null
+          id?: string
+          is_published?: boolean | null
+          name?: string
+          photo_url?: string | null
+          qualification?: string | null
+          subjects?: string[] | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      gallery: {
+        Row: {
+          category: string | null
+          created_at: string
+          created_by: string | null
+          id: string
+          image_url: string
+          is_published: boolean | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          category?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          image_url: string
+          is_published?: boolean | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string | null
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          image_url?: string
+          is_published?: boolean | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           created_at: string
@@ -92,6 +203,42 @@ export type Database = {
           student_name?: string
           updated_at?: string
           year?: number
+        }
+        Relationships: []
+      }
+      syllabus: {
+        Row: {
+          created_at: string
+          created_by: string | null
+          description: string | null
+          exam_type: string
+          file_url: string
+          id: string
+          is_published: boolean | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          exam_type: string
+          file_url: string
+          id?: string
+          is_published?: boolean | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          exam_type?: string
+          file_url?: string
+          id?: string
+          is_published?: boolean | null
+          title?: string
+          updated_at?: string
         }
         Relationships: []
       }
