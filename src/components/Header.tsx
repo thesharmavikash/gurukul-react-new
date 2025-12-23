@@ -1,17 +1,20 @@
 import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Phone, Mail, MapPin } from "lucide-react";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
 
   const navLinks = [
-    { name: "Home", href: "#home" },
-    { name: "About", href: "#about" },
-    { name: "Courses", href: "#courses" },
-    { name: "Faculty", href: "#faculty" },
-    { name: "Results", href: "#results" },
-    { name: "Contact", href: "#contact" },
+    { name: "Home", href: isHomePage ? "#home" : "/", isAnchor: isHomePage },
+    { name: "About", href: isHomePage ? "#about" : "/#about", isAnchor: isHomePage },
+    { name: "Courses", href: isHomePage ? "#courses" : "/#courses", isAnchor: isHomePage },
+    { name: "Gallery", href: "/gallery", isAnchor: false },
+    { name: "Results", href: "/results", isAnchor: false },
+    { name: "Contact", href: isHomePage ? "#contact" : "/#contact", isAnchor: isHomePage },
   ];
 
   return (
@@ -42,7 +45,7 @@ const Header = () => {
         <div className="container-narrow">
           <div className="flex items-center justify-between h-20 px-4">
             {/* Logo */}
-            <a href="#home" className="flex items-center gap-3">
+            <Link to="/" className="flex items-center gap-3">
               <div className="w-12 h-12 rounded-full hero-gradient flex items-center justify-center text-primary-foreground font-serif font-bold text-xl shadow-glow">
                 GC
               </div>
@@ -50,18 +53,30 @@ const Header = () => {
                 <h1 className="font-serif text-xl font-bold text-foreground">Gurukul Classes</h1>
                 <p className="text-xs text-muted-foreground">A True Success Platform</p>
               </div>
-            </a>
+            </Link>
 
             {/* Desktop Navigation */}
             <div className="hidden lg:flex items-center gap-8">
               {navLinks.map((link) => (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  className="text-foreground hover:text-primary font-medium transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary hover:after:w-full after:transition-all"
-                >
-                  {link.name}
-                </a>
+                link.isAnchor ? (
+                  <a
+                    key={link.name}
+                    href={link.href}
+                    className="text-foreground hover:text-primary font-medium transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary hover:after:w-full after:transition-all"
+                  >
+                    {link.name}
+                  </a>
+                ) : (
+                  <Link
+                    key={link.name}
+                    to={link.href}
+                    className={`text-foreground hover:text-primary font-medium transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary hover:after:w-full after:transition-all ${
+                      location.pathname === link.href ? "text-primary after:w-full" : ""
+                    }`}
+                  >
+                    {link.name}
+                  </Link>
+                )
               ))}
               <Button variant="hero" size="lg">
                 Enroll Now
@@ -82,14 +97,27 @@ const Header = () => {
             <div className="lg:hidden border-t border-border py-4 px-4 animate-fade-in">
               <div className="flex flex-col gap-4">
                 {navLinks.map((link) => (
-                  <a
-                    key={link.name}
-                    href={link.href}
-                    className="text-foreground hover:text-primary font-medium transition-colors py-2"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {link.name}
-                  </a>
+                  link.isAnchor ? (
+                    <a
+                      key={link.name}
+                      href={link.href}
+                      className="text-foreground hover:text-primary font-medium transition-colors py-2"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {link.name}
+                    </a>
+                  ) : (
+                    <Link
+                      key={link.name}
+                      to={link.href}
+                      className={`text-foreground hover:text-primary font-medium transition-colors py-2 ${
+                        location.pathname === link.href ? "text-primary" : ""
+                      }`}
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {link.name}
+                    </Link>
+                  )
                 ))}
                 <Button variant="hero" className="mt-2">
                   Enroll Now
