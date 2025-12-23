@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import {
   Plus,
   Edit,
@@ -7,11 +7,16 @@ import {
   EyeOff,
   Search,
   Loader2,
+  Upload,
+  Link,
+  Clipboard,
+  X,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Table,
   TableBody,
@@ -62,6 +67,9 @@ const ResultsManagement = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingResult, setEditingResult] = useState<StudentResult | null>(null);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [photoTab, setPhotoTab] = useState<string>("upload");
+  const pasteAreaRef = useRef<HTMLDivElement>(null);
 
   const { user } = useAuth();
   const { toast } = useToast();
@@ -79,6 +87,52 @@ const ResultsManagement = () => {
     photo_url: "",
     is_published: false,
   });
+
+  const handleImageUpload = async (file: File) => {
+    if (!file.type.startsWith("image/")) {
+      toast({ title: "Error", description: "Please select an image file", variant: "destructive" });
+      return;
+    }
+
+    setUploading(true);
+    const fileExt = file.name.split(".").pop();
+    const fileName = `results/${Date.now()}.${fileExt}`;
+
+    const { error: uploadError } = await supabase.storage
+      .from("uploads")
+      .upload(fileName, file);
+
+    if (uploadError) {
+      toast({ title: "Error", description: "Failed to upload image", variant: "destructive" });
+    } else {
+      const { data } = supabase.storage.from("uploads").getPublicUrl(fileName);
+      setFormData({ ...formData, photo_url: data.publicUrl });
+      toast({ title: "Success", description: "Image uploaded" });
+    }
+    setUploading(false);
+  };
+
+  const handleFileInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) handleImageUpload(file);
+  };
+
+  const handlePaste = async (e: React.ClipboardEvent) => {
+    const items = e.clipboardData.items;
+    for (const item of items) {
+      if (item.type.startsWith("image/")) {
+        const file = item.getAsFile();
+        if (file) {
+          await handleImageUpload(file);
+          break;
+        }
+      }
+    }
+  };
+
+  const clearPhoto = () => {
+    setFormData({ ...formData, photo_url: "" });
+  };
 
   const fetchResults = async () => {
     setLoading(true);
@@ -346,13 +400,88 @@ const ResultsManagement = () => {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="photo_url">Photo URL</Label>
-                <Input
-                  id="photo_url"
-                  value={formData.photo_url}
-                  onChange={(e) => setFormData({ ...formData, photo_url: e.target.value })}
-                  placeholder="https://..."
-                />
+                <Label>Student Photo</Label>
+                
+                {formData.photo_url && (
+                  <div className="relative inline-block mb-3">
+                    <img 
+                      src={formData.photo_url} 
+                      alt="Student preview" 
+                      className="w-24 h-24 rounded-lg object-cover border border-border"
+                    />
+                    <button
+                      type="button"
+                      onClick={clearPhoto}
+                      className="absolute -top-2 -right-2 w-6 h-6 bg-destructive text-destructive-foreground rounded-full flex items-center justify-center hover:bg-destructive/90"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </div>
+                )}
+
+                <Tabs value={photoTab} onValueChange={setPhotoTab} className="w-full">
+                  <TabsList className="grid w-full grid-cols-3">
+                    <TabsTrigger value="upload" className="text-xs">
+                      <Upload className="w-3 h-3 mr-1" /> Upload
+                    </TabsTrigger>
+                    <TabsTrigger value="url" className="text-xs">
+                      <Link className="w-3 h-3 mr-1" /> URL
+                    </TabsTrigger>
+                    <TabsTrigger value="paste" className="text-xs">
+                      <Clipboard className="w-3 h-3 mr-1" /> Paste
+                    </TabsTrigger>
+                  </TabsList>
+                  
+                  <TabsContent value="upload" className="mt-3">
+                    <Label htmlFor="photo-upload" className="cursor-pointer block">
+                      <div className="flex items-center justify-center gap-2 px-4 py-6 border-2 border-dashed rounded-lg hover:bg-muted transition-colors">
+                        {uploading ? (
+                          <Loader2 className="w-5 h-5 animate-spin" />
+                        ) : (
+                          <>
+                            <Upload className="w-5 h-5 text-muted-foreground" />
+                            <span className="text-sm text-muted-foreground">Click to upload photo</span>
+                          </>
+                        )}
+                      </div>
+                    </Label>
+                    <input
+                      id="photo-upload"
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handleFileInputChange}
+                      disabled={uploading}
+                    />
+                  </TabsContent>
+                  
+                  <TabsContent value="url" className="mt-3">
+                    <Input
+                      placeholder="Enter image URL (https://...)"
+                      value={formData.photo_url}
+                      onChange={(e) => setFormData({ ...formData, photo_url: e.target.value })}
+                    />
+                  </TabsContent>
+                  
+                  <TabsContent value="paste" className="mt-3">
+                    <div
+                      ref={pasteAreaRef}
+                      onPaste={handlePaste}
+                      tabIndex={0}
+                      className="flex items-center justify-center gap-2 px-4 py-6 border-2 border-dashed rounded-lg hover:bg-muted transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary"
+                      onClick={() => pasteAreaRef.current?.focus()}
+                    >
+                      {uploading ? (
+                        <Loader2 className="w-5 h-5 animate-spin" />
+                      ) : (
+                        <>
+                          <Clipboard className="w-5 h-5 text-muted-foreground" />
+                          <span className="text-sm text-muted-foreground">Click here and paste image (Ctrl+V)</span>
+                        </>
+                      )}
+                    </div>
+                  </TabsContent>
+                </Tabs>
               </div>
 
               <div className="flex items-center gap-2">
