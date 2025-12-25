@@ -14,6 +14,7 @@ interface Student {
   year: number;
   score?: string;
   category?: string;
+  image?: string;
 }
 
 const Results = () => {
@@ -223,8 +224,16 @@ const Results = () => {
                     <div className="p-5">
                       {/* Avatar & Name */}
                       <div className="flex items-center gap-3 mb-4">
-                        <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${getExamColor(student.exam)} flex items-center justify-center text-primary-foreground font-bold group-hover:scale-110 transition-transform`}>
-                          {student.name.split(" ").map(n => n[0]).join("")}
+                        <div className={`w-12 h-12 rounded-full bg-gradient-to-br ${getExamColor(student.exam)} flex items-center justify-center text-primary-foreground font-bold group-hover:scale-110 transition-transform overflow-hidden`}>
+                          {student.image ? (
+                            <img 
+                              src={student.image} 
+                              alt={student.name}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            student.name.split(" ").map(n => n[0]).join("")
+                          )}
                         </div>
                         <div>
                           <h3 className="font-semibold text-foreground">{student.name}</h3>
