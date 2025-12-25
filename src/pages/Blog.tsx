@@ -568,4 +568,9 @@ const BlogPost = () => {
   );
 };
 
-export { BlogList, BlogPost };
+const Blog = () => {
+  const { slug } = useParams();
+  return slug ? <BlogPost /> : <BlogList />;
+};
+
+export default Blog;

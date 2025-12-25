@@ -445,4 +445,9 @@ const FacultyProfile = () => {
   );
 };
 
-export { FacultyList, FacultyProfile };
+const Faculty = () => {
+  const { id } = useParams();
+  return id ? <FacultyProfile /> : <FacultyList />;
+};
+
+export default Faculty;

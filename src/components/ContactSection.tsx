@@ -159,11 +159,38 @@ const ContactSection = () => {
                 </div>
                 <div>
                   <h4 className="font-semibold text-foreground mb-2">{info.title}</h4>
-                  {info.lines.map((line, i) => (
-                    <p key={i} className="text-muted-foreground text-sm">
-                      {line}
-                    </p>
-                  ))}
+                  {info.lines.map((line, i) => {
+                    if (info.title === "Call Us") {
+                      return (
+                        <a key={i} href={`tel:${line}`} className="block text-muted-foreground text-sm hover:text-primary transition-colors">
+                          {line}
+                        </a>
+                      );
+                    } else if (info.title === "Email Us") {
+                      return (
+                        <a key={i} href={`mailto:${line}`} className="block text-muted-foreground text-sm hover:text-primary transition-colors">
+                          {line}
+                        </a>
+                      );
+                    } else if (info.title === "Visit Us") {
+                      return (
+                        <a 
+                          key={i} 
+                          href="https://maps.google.com/?q=Anjanpeer+Chowk+Hajipur+Bihar" 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="block text-muted-foreground text-sm hover:text-primary transition-colors"
+                        >
+                          {line}
+                        </a>
+                      );
+                    }
+                    return (
+                      <p key={i} className="text-muted-foreground text-sm">
+                        {line}
+                      </p>
+                    );
+                  })}
                 </div>
               </div>
             ))}

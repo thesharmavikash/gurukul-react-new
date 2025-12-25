@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Clock, Users, BookOpen, ArrowRight, GraduationCap, Atom, FlaskConical, Calculator, Dna } from "lucide-react";
-
+import { Link } from "react-router-dom";
 const CoursesSection = () => {
   const courses = [
     {
+      id: "two-year-foundation",
       title: "Two Year Foundation Course",
       duration: "2 Years",
       targetClass: "Class XI & XII",
@@ -13,6 +14,7 @@ const CoursesSection = () => {
       subjects: ["Physics", "Chemistry", "Mathematics/Biology"]
     },
     {
+      id: "one-year-target",
       title: "One Year Target Course",
       duration: "1 Year",
       targetClass: "Class XII",
@@ -22,6 +24,7 @@ const CoursesSection = () => {
       subjects: ["Physics", "Chemistry", "Maths/Bio"]
     },
     {
+      id: "one-year-board",
       title: "One Year Board Exam Course",
       duration: "1 Year",
       targetClass: "Class XI & XII",
@@ -31,6 +34,7 @@ const CoursesSection = () => {
       subjects: ["All Subjects", "Board Focus"]
     },
     {
+      id: "foundation-viii-x",
       title: "Foundation Course (VIII-X)",
       duration: "1-3 Years",
       targetClass: "Class VIII, IX & X",
@@ -40,6 +44,7 @@ const CoursesSection = () => {
       subjects: ["Science", "Mathematics", "Mental Ability"]
     },
     {
+      id: "gurukul-achiever",
       title: "Gurukul Achiever",
       duration: "1 Year",
       targetClass: "Class XI & XII",
@@ -49,6 +54,7 @@ const CoursesSection = () => {
       subjects: ["Complete Board", "Competition Prep"]
     },
     {
+      id: "neet-preparation",
       title: "NEET Preparation",
       duration: "1-2 Years",
       targetClass: "Class XI & XII",
@@ -127,10 +133,12 @@ const CoursesSection = () => {
                 </div>
 
                 {/* CTA */}
-                <Button variant="outline" className="w-full group/btn">
-                  Learn More
-                  <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
-                </Button>
+                <Link to={`/course/${course.id}`}>
+                  <Button variant="outline" className="w-full group/btn">
+                    Learn More
+                    <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                  </Button>
+                </Link>
               </div>
             </div>
           ))}

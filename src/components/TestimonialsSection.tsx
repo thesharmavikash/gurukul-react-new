@@ -6,12 +6,14 @@ interface Testimonial {
   id: number;
   name: string;
   achievement: string;
+  college: string;
   exam: string;
   year: string;
   quote: string;
   rating: number;
   hasVideo: boolean;
   videoId?: string;
+  image: string;
 }
 
 const TestimonialsSection = () => {
@@ -22,66 +24,78 @@ const TestimonialsSection = () => {
     {
       id: 1,
       name: "Prachi Kumari",
-      achievement: "AIIMS Delhi",
+      achievement: "AIR 1245",
+      college: "AIIMS Delhi",
       exam: "NEET 2024",
       year: "2024",
       quote: "Gurukul Classes transformed my preparation journey. The faculty's dedication and personalized attention helped me crack NEET with flying colors. The doubt-clearing sessions were incredibly helpful!",
       rating: 5,
       hasVideo: true,
-      videoId: "dQw4w9WgXcQ"
+      videoId: "dQw4w9WgXcQ",
+      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&auto=format&fit=crop&q=80"
     },
     {
       id: 2,
       name: "Harsh Kumar",
-      achievement: "IIT Kharagpur",
+      achievement: "AIR 892",
+      college: "IIT Kharagpur",
       exam: "JEE Advanced 2024",
       year: "2024",
       quote: "The systematic approach to problem-solving taught here is unmatched. Teachers don't just teach, they mentor. I'm grateful for the foundation that helped me secure a seat at IIT.",
       rating: 5,
       hasVideo: true,
-      videoId: "dQw4w9WgXcQ"
+      videoId: "dQw4w9WgXcQ",
+      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&auto=format&fit=crop&q=80"
     },
     {
       id: 3,
       name: "Shreya Singh",
-      achievement: "IIT Bombay",
+      achievement: "AIR 456",
+      college: "IIT Bombay",
       exam: "JEE Advanced 2024",
       year: "2024",
       quote: "From day one, the faculty believed in me more than I believed in myself. The regular tests and detailed analysis helped me identify my weak areas. Forever thankful to Gurukul family!",
       rating: 5,
-      hasVideo: false
+      hasVideo: false,
+      image: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&auto=format&fit=crop&q=80"
     },
     {
       id: 4,
       name: "Aryan Raj",
-      achievement: "NIT Patna (CSE)",
+      achievement: "AIR 3421",
+      college: "NIT Patna (CSE)",
       exam: "JEE Main 2024",
       year: "2024",
       quote: "The competitive environment and excellent study material made all the difference. The teachers are always available for doubts, even after class hours. Best decision of my life to join Gurukul!",
       rating: 5,
       hasVideo: true,
-      videoId: "dQw4w9WgXcQ"
+      videoId: "dQw4w9WgXcQ",
+      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=400&auto=format&fit=crop&q=80"
     },
     {
       id: 5,
       name: "Ananya Verma",
-      achievement: "AIIMS Patna",
+      achievement: "AIR 1890",
+      college: "AIIMS Patna",
       exam: "NEET 2023",
       year: "2023",
       quote: "Biology classes here are exceptional. The way concepts are explained makes them unforgettable. Mock tests prepared me for the actual exam pressure. Highly recommend!",
       rating: 5,
-      hasVideo: false
+      hasVideo: false,
+      image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&auto=format&fit=crop&q=80"
     },
     {
       id: 6,
       name: "Rohit Sharma",
-      achievement: "IIT Roorkee",
+      achievement: "AIR 756",
+      college: "IIT Roorkee",
       exam: "JEE Advanced 2023",
       year: "2023",
       quote: "Physics and Maths faculty are world-class. The shortcuts and techniques taught here saved valuable time in the exam. Gurukul is truly a success platform!",
       rating: 5,
       hasVideo: true,
-      videoId: "dQw4w9WgXcQ"
+      videoId: "dQw4w9WgXcQ",
+      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&auto=format&fit=crop&q=80"
     }
   ];
 
@@ -126,20 +140,24 @@ const TestimonialsSection = () => {
                 allowFullScreen
               />
             ) : (
-              <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-secondary to-primary/20">
-                <div className="text-center">
-                  <div className="w-24 h-24 rounded-full hero-gradient flex items-center justify-center mx-auto mb-4 text-primary-foreground text-3xl font-serif font-bold">
-                    {currentTestimonial.name.charAt(0)}
-                  </div>
+              <div className="w-full h-full relative">
+                <img 
+                  src={currentTestimonial.image} 
+                  alt={currentTestimonial.name}
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-secondary/90 via-secondary/30 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-6 text-center">
                   <h3 className="text-secondary-foreground text-xl font-semibold mb-1">
                     {currentTestimonial.name}
                   </h3>
-                  <p className="text-accent font-medium">{currentTestimonial.achievement}</p>
+                  <p className="text-accent font-medium">{currentTestimonial.college}</p>
+                  <p className="text-secondary-foreground/70 text-sm">{currentTestimonial.achievement} • {currentTestimonial.exam}</p>
                   {currentTestimonial.hasVideo && (
                     <Button
                       variant="hero"
                       size="lg"
-                      className="mt-6"
+                      className="mt-4"
                       onClick={() => setPlayingVideo(currentTestimonial.videoId || null)}
                     >
                       <Play className="w-5 h-5" />
@@ -158,12 +176,14 @@ const TestimonialsSection = () => {
               "{currentTestimonial.quote}"
             </p>
             <div className="flex items-center gap-4 mb-4">
-              <div className="w-14 h-14 rounded-full hero-gradient flex items-center justify-center text-primary-foreground font-bold text-lg">
-                {currentTestimonial.name.charAt(0)}
-              </div>
+              <img 
+                src={currentTestimonial.image} 
+                alt={currentTestimonial.name}
+                className="w-14 h-14 rounded-full object-cover border-2 border-primary"
+              />
               <div>
                 <h4 className="font-semibold text-foreground">{currentTestimonial.name}</h4>
-                <p className="text-primary font-medium">{currentTestimonial.achievement}</p>
+                <p className="text-primary font-medium">{currentTestimonial.college}</p>
                 <p className="text-sm text-muted-foreground">{currentTestimonial.exam}</p>
               </div>
             </div>
@@ -213,12 +233,15 @@ const TestimonialsSection = () => {
               }`}
             >
               <div className="flex items-center gap-3 mb-4">
-                <div className="w-12 h-12 rounded-full hero-gradient flex items-center justify-center text-primary-foreground font-bold">
-                  {testimonial.name.charAt(0)}
-                </div>
+                <img 
+                  src={testimonial.image} 
+                  alt={testimonial.name}
+                  className="w-12 h-12 rounded-full object-cover border-2 border-primary/20"
+                />
                 <div>
                   <h4 className="font-semibold text-foreground text-sm">{testimonial.name}</h4>
-                  <p className="text-xs text-primary">{testimonial.achievement}</p>
+                  <p className="text-xs text-primary">{testimonial.college}</p>
+                  <p className="text-xs text-muted-foreground">{testimonial.exam}</p>
                 </div>
                 {testimonial.hasVideo && (
                   <Play className="w-5 h-5 text-primary ml-auto" />
