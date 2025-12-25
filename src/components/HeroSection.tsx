@@ -32,19 +32,23 @@ const HeroSection = () => {
 
           {/* Subheading */}
           <p className="text-lg md:text-xl text-secondary-foreground/80 mb-8 max-w-2xl animate-fade-in stagger-2">
-            Premier coaching institute for IIT-JEE, NEET, and Board Examinations. 
+            Premier coaching institute for IIT-JEE, NEET, and Board Examinations.
             Transforming aspirations into achievements since 2013.
           </p>
 
           {/* CTA Buttons */}
           <div className="flex flex-wrap gap-4 mb-12 animate-fade-in stagger-3">
-            <Button variant="hero" size="xl">
-              Start Your Journey
-              <ArrowRight className="w-5 h-5" />
-            </Button>
+            <a href="#contact" className="mt-2">
+              <Button variant="hero" size="xl">
+                Start Your Journey
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </Button>
+            </a>
+            <a href="/results" className="mt-2">
             <Button variant="heroOutline" size="xl">
               View Results 2025
             </Button>
+            </a>
           </div>
 
           {/* Stats */}

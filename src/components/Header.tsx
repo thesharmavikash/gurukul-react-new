@@ -78,9 +78,11 @@ const Header = () => {
                   </Link>
                 )
               ))}
+              <a href="#contact" className="mt-2">
               <Button variant="hero" size="lg">
-                Enroll Now
+                Call Us
               </Button>
+              </a>
             </div>
 
             {/* Mobile menu button */}
@@ -119,9 +121,11 @@ const Header = () => {
                     </Link>
                   )
                 ))}
+                <a href="#contact" className="mt-2">
                 <Button variant="hero" className="mt-2">
-                  Enroll Now
+                  Call Us
                 </Button>
+                </a>
               </div>
             </div>
           )}
