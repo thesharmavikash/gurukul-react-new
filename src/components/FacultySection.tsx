@@ -8,6 +8,7 @@ const FacultySection = () => {
       subject: "English",
       qualification: "M.A, B.Ed",
       icon: BookOpen,
+      image: "", // Add image URL when available
     },
     {
       name: "Mr. Chandan Kumar",
@@ -15,6 +16,7 @@ const FacultySection = () => {
       subject: "Physics",
       qualification: "M.Sc Physics",
       icon: Atom,
+      image: "",
     },
     {
       name: "Mr. Raushan Jha",
@@ -22,6 +24,7 @@ const FacultySection = () => {
       subject: "Physics",
       qualification: "M.Sc Physics",
       icon: Atom,
+      image: "",
     },
     {
       name: "Mr. Atul Kumar",
@@ -29,6 +32,7 @@ const FacultySection = () => {
       subject: "Physics",
       qualification: "M.Sc Physics",
       icon: Atom,
+      image: "",
     },
     {
       name: "Mr. Sumit Jha",
@@ -36,6 +40,7 @@ const FacultySection = () => {
       subject: "Chemistry",
       qualification: "M.Sc Chemistry",
       icon: FlaskConical,
+      image: "",
     },
     {
       name: "Mr. Rahul Jha",
@@ -43,6 +48,7 @@ const FacultySection = () => {
       subject: "Chemistry",
       qualification: "M.Sc Chemistry",
       icon: FlaskConical,
+      image: "",
     },
     {
       name: "Mr. Shekhar Suman",
@@ -50,6 +56,7 @@ const FacultySection = () => {
       subject: "Mathematics",
       qualification: "M.Sc Mathematics",
       icon: Calculator,
+      image: "",
     },
     {
       name: "Mr. Ritu Raj",
@@ -57,6 +64,7 @@ const FacultySection = () => {
       subject: "Biology",
       qualification: "M.Sc Biology",
       icon: Dna,
+      image: "",
     },
   ];
 
@@ -100,8 +108,16 @@ const FacultySection = () => {
             >
               {/* Avatar */}
               <div className="relative w-24 h-24 mx-auto mb-4">
-                <div className={`w-full h-full rounded-full bg-gradient-to-br ${getSubjectColor(member.subject)} flex items-center justify-center group-hover:scale-110 transition-transform`}>
-                  <member.icon className="w-10 h-10 text-primary-foreground" />
+                <div className={`w-full h-full rounded-full bg-gradient-to-br ${getSubjectColor(member.subject)} flex items-center justify-center group-hover:scale-110 transition-transform overflow-hidden`}>
+                  {member.image ? (
+                    <img 
+                      src={member.image} 
+                      alt={member.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <member.icon className="w-10 h-10 text-primary-foreground" />
+                  )}
                 </div>
                 <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-card rounded-full flex items-center justify-center shadow-soft">
                   <span className="text-xs font-bold text-primary">
