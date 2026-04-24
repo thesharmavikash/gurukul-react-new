@@ -1,20 +1,24 @@
+import { Link } from "react-router-dom";
 import { Phone, Mail, MapPin, Facebook, Instagram, Youtube, Twitter } from "lucide-react";
 
 const Footer = () => {
   const quickLinks = [
-    { name: "About Us", href: "#about" },
-    { name: "Our Courses", href: "#courses" },
-    { name: "Faculty", href: "#faculty" },
-    { name: "Results", href: "#results" },
-    { name: "Contact", href: "#contact" },
+    { name: "About Us", href: "/about" },
+    { name: "Our Courses", href: "/courses" },
+    { name: "Faculty", href: "/faculty" },
+    { name: "GTSE Results", href: "/gtse-results" },
+    { name: "Results", href: "/results" },
+    { name: "Contact", href: "/contact" },
+    { name: "Gallery", href: "/gallery" },
+    { name: "Blog", href: "/blog" },
   ];
 
   const courses = [
-    "Two Year Foundation",
-    "One Year Target",
-    "Board Exam Course",
-    "Foundation (VIII-X)",
-    "Gurukul Achiever",
+    { name: "Two Year Foundation", id: "two-year-foundation" },
+    { name: "One Year Target", id: "one-year-target" },
+    { name: "Board Exam Course", id: "one-year-board" },
+    { name: "Foundation (VIII-X)", id: "foundation-viii-x" },
+    { name: "Gurukul Achiever", id: "gurukul-achiever" },
   ];
 
   return (
@@ -54,12 +58,12 @@ const Footer = () => {
             <ul className="space-y-2">
               {quickLinks.map((link, i) => (
                 <li key={i}>
-                  <a
-                    href={link.href}
+                  <Link
+                    to={link.href}
                     className="text-secondary-foreground/70 hover:text-accent transition-colors text-sm"
                   >
                     {link.name}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -71,12 +75,12 @@ const Footer = () => {
             <ul className="space-y-2">
               {courses.map((course, i) => (
                 <li key={i}>
-                  <a
-                    href="#courses"
+                  <Link
+                    to={`/course/${course.id}`}
                     className="text-secondary-foreground/70 hover:text-accent transition-colors text-sm"
                   >
-                    {course}
-                  </a>
+                    {course.name}
+                  </Link>
                 </li>
               ))}
             </ul>

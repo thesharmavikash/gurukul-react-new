@@ -7,9 +7,14 @@ import { HelmetProvider } from "react-helmet-async";
 import Index from "./pages/Index";
 import Gallery from "./pages/Gallery";
 import Results from "./pages/Results";
+import GTSEResults from "./pages/GTSEResults";
 import Course from "./pages/Course";
+import Courses from "./pages/Courses";
 import Blog from "./pages/Blog";
 import Faculty from "./pages/Faculty";
+import About from "./pages/About";
+import Testimonials from "./pages/Testimonials";
+import Contact from "./pages/Contact";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 
@@ -24,13 +29,18 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/courses" element={<Courses />} />
             <Route path="/gallery" element={<Gallery />} />
             <Route path="/results" element={<Results />} />
+            <Route path="/gtse-results" element={<GTSEResults />} />
             <Route path="/course/:courseId" element={<Course />} />
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<Blog />} />
             <Route path="/faculty" element={<Faculty />} />
             <Route path="/faculty/:id" element={<Faculty />} />
+            <Route path="/testimonials" element={<Testimonials />} />
+            <Route path="/contact" element={<Contact />} />
             <Route path="/dashboard" element={<Dashboard />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

@@ -9,12 +9,15 @@ const Header = () => {
   const isHomePage = location.pathname === "/";
 
   const navLinks = [
-    { name: "Home", href: isHomePage ? "#home" : "/", isAnchor: isHomePage },
-    { name: "About", href: isHomePage ? "#about" : "/#about", isAnchor: isHomePage },
-    { name: "Courses", href: isHomePage ? "#courses" : "/#courses", isAnchor: isHomePage },
-    { name: "Gallery", href: "/gallery", isAnchor: false },
-    { name: "Results", href: "/results", isAnchor: false },
-    { name: "Contact", href: isHomePage ? "#contact" : "/#contact", isAnchor: isHomePage },
+    { name: "Home", href: "/" },
+    { name: "About", href: "/about" },
+    { name: "Courses", href: "/courses" },
+    { name: "Faculty", href: "/faculty" },
+    { name: "GTSE Results", href: "/gtse-results" },
+    { name: "Results", href: "/results" },
+    { name: "Gallery", href: "/gallery" },
+    { name: "Blog", href: "/blog" },
+    { name: "Contact", href: "/contact" },
   ];
 
   return (
@@ -56,38 +59,26 @@ const Header = () => {
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center gap-8">
+            <div className="hidden xl:flex items-center gap-6">
               {navLinks.map((link) => (
-                link.isAnchor ? (
-                  <a
-                    key={link.name}
-                    href={link.href}
-                    className="text-foreground hover:text-primary font-medium transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary hover:after:w-full after:transition-all"
-                  >
-                    {link.name}
-                  </a>
-                ) : (
-                  <Link
-                    key={link.name}
-                    to={link.href}
-                    className={`text-foreground hover:text-primary font-medium transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary hover:after:w-full after:transition-all ${
-                      location.pathname === link.href ? "text-primary after:w-full" : ""
-                    }`}
-                  >
-                    {link.name}
-                  </Link>
-                )
+                <Link
+                  key={link.name}
+                  to={link.href}
+                  className={`text-foreground hover:text-primary font-medium transition-colors relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary hover:after:w-full after:transition-all ${
+                    location.pathname === link.href ? "text-primary after:w-full" : ""
+                  }`}
+                >
+                  {link.name}
+                </Link>
               ))}
-              <a href="#contact" className="mt-2">
-              <Button variant="hero" size="lg">
-                Call Us
+              <Button variant="hero" size="lg" asChild>
+                <a href="tel:7903113441">Call Us</a>
               </Button>
-              </a>
             </div>
 
             {/* Mobile menu button */}
             <button
-              className="lg:hidden p-2 text-foreground"
+              className="xl:hidden p-2 text-foreground"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
             >
               {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -96,36 +87,23 @@ const Header = () => {
 
           {/* Mobile Navigation */}
           {isMenuOpen && (
-            <div className="lg:hidden border-t border-border py-4 px-4 animate-fade-in">
+            <div className="xl:hidden border-t border-border py-4 px-4 animate-fade-in max-h-[80vh] overflow-y-auto">
               <div className="flex flex-col gap-4">
                 {navLinks.map((link) => (
-                  link.isAnchor ? (
-                    <a
-                      key={link.name}
-                      href={link.href}
-                      className="text-foreground hover:text-primary font-medium transition-colors py-2"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      {link.name}
-                    </a>
-                  ) : (
-                    <Link
-                      key={link.name}
-                      to={link.href}
-                      className={`text-foreground hover:text-primary font-medium transition-colors py-2 ${
-                        location.pathname === link.href ? "text-primary" : ""
-                      }`}
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      {link.name}
-                    </Link>
-                  )
+                  <Link
+                    key={link.name}
+                    to={link.href}
+                    className={`text-foreground hover:text-primary font-medium transition-colors py-2 ${
+                      location.pathname === link.href ? "text-primary" : ""
+                    }`}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {link.name}
+                  </Link>
                 ))}
-                <a href="#contact" className="mt-2">
-                <Button variant="hero" className="mt-2">
-                  Call Us
+                <Button variant="hero" className="mt-2" asChild>
+                  <a href="tel:7903113441">Call Us</a>
                 </Button>
-                </a>
               </div>
             </div>
           )}

@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { Link } from "react-router-dom";
 import { Trophy, Star, Medal, TrendingUp, ArrowRight } from "lucide-react";
 
 const ResultsSection = () => {
@@ -119,10 +120,18 @@ const ResultsSection = () => {
         </div>
 
         {/* CTA */}
-        <div className="text-center">
-          <Button variant="hero" size="xl">
-            View Complete Results
-            <ArrowRight className="w-5 h-5" />
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+          <Button variant="hero" size="xl" asChild>
+            <Link to="/results">
+              View Complete Results
+              <ArrowRight className="w-5 h-5" />
+            </Link>
+          </Button>
+          <Button variant="outline" size="xl" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground" asChild>
+            <Link to="/gtse-results">
+              Check GTSE 2024 Results
+              <Trophy className="w-5 h-5 ml-2" />
+            </Link>
           </Button>
         </div>
       </div>
