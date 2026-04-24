@@ -1,0 +1,109 @@
+[
+  {
+    "id": "santosh-kumar",
+    "name": "Santosh Kumar",
+    "subject": "English",
+    "qualification": "M.A., B.Ed.",
+    "experience": "15+ Years",
+    "designation": "Principal",
+    "category": "foundation",
+    "level": "HOD",
+    "specialization": ["English Literature", "Communication Skills", "Administrative Leadership"],
+    "achievements": ["Founded Gurukul Classes in 2013", "Mentored 5000+ students"],
+    "bio": "Visionary founder and principal of Gurukul Classes."
+  },
+  {
+    "id": "chandan-kumar",
+    "name": "Mr. Chandan Kumar",
+    "subject": "Physics",
+    "qualification": "M.Sc. Physics, B.Ed.",
+    "experience": "12+ Years",
+    "designation": "Senior Faculty - Physics",
+    "category": "mains-advanced",
+    "level": "HOD",
+    "specialization": ["Mechanics", "Electromagnetism", "Modern Physics"],
+    "achievements": ["100+ students selected in IIT through JEE Advanced"],
+    "bio": "Exceptional ability to simplify complex physics concepts."
+  },
+  {
+    "id": "raushan-jha",
+    "name": "Mr. Raushan Jha",
+    "subject": "Physics",
+    "qualification": "M.Sc. Physics",
+    "experience": "8+ Years",
+    "designation": "Faculty - Physics",
+    "category": "mains-advanced",
+    "level": "Senior",
+    "specialization": ["Optics", "Thermodynamics", "NEET Physics"],
+    "achievements": ["50+ AIIMS selections under guidance"],
+    "bio": "Energy and enthusiasm in every physics class."
+  },
+  {
+    "id": "sumit-jha",
+    "name": "Mr. Sumit Jha",
+    "subject": "Chemistry",
+    "qualification": "M.Sc. Chemistry",
+    "experience": "10+ Years",
+    "designation": "Senior Faculty - Chemistry",
+    "category": "mains-advanced",
+    "level": "HOD",
+    "specialization": ["Organic Chemistry", "Reaction Mechanisms"],
+    "achievements": ["200+ IIT/NIT selections"],
+    "bio": "Mastered the art of teaching organic chemistry."
+  },
+  {
+    "id": "shekhar-suman",
+    "name": "Mr. Shekhar Suman",
+    "subject": "Mathematics",
+    "qualification": "M.Sc. Mathematics",
+    "experience": "11+ Years",
+    "designation": "Senior Faculty - Mathematics",
+    "category": "mains-advanced",
+    "level": "HOD",
+    "specialization": ["Calculus", "Coordinate Geometry", "Algebra"],
+    "achievements": ["150+ students scored 95+ in JEE Maths"],
+    "bio": "Mathematics wizard who can solve any problem with multiple approaches."
+  },
+  {
+    "id": "ritu-raj",
+    "name": "Mr. Ritu Raj",
+    "subject": "Biology",
+    "qualification": "M.Sc. Biology, B.Ed.",
+    "experience": "9+ Years",
+    "designation": "Senior Faculty - Biology",
+    "category": "mains-advanced",
+    "level": "HOD",
+    "specialization": ["Human Physiology", "Genetics", "Ecology"],
+    "achievements": ["80+ AIIMS/Government Medical selections"],
+    "bio": "Makes biology fascinating through his storytelling approach."
+  },
+  {
+    "id": "atul-kumar",
+    "name": "Mr. Atul Kumar",
+    "subject": "Physics",
+    "qualification": "M.Sc. Physics",
+    "experience": "6+ Years",
+    "designation": "Faculty - Physics",
+    "category": "foundation",
+    "level": "Senior",
+    "specialization": ["Mechanics", "SHM & Waves", "Foundation Physics"],
+    "achievements": ["Specialist in foundation batch training"],
+    "bio": "Excels in building strong physics foundations for younger students."
+  },
+  {
+    "id": "amit-sharma",
+    "name": "Mr. Amit Sharma",
+    "subject": "Mathematics",
+    "qualification": "M.Sc. Mathematics, B.Ed.",
+    "experience": "8+ Years",
+    "designation": "Senior Faculty - Mathematics",
+    "category": "mains-advanced",
+    "level": "Senior",
+    "specialization": ["Probability", "Statistics", "3D Geometry"],
+    "achievements": [
+      "Mentored top 500 AIR holders in JEE Advanced",
+      "Expert in mental math shortcut techniques"
+    ],
+    "bio": "Mr. Amit Sharma is a dedicated mathematics expert known for his logical approach and ability to make complex geometry problems simple for JEE aspirants."
+  }
+]

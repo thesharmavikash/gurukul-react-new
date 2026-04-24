@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "name": "Aryan Raj",
+    "role": "IIT Roorkee, 2024",
+    "content": "Gurukul Classes provided me with the structured approach I needed to crack JEE Advanced. The personalized doubt sessions were a game changer.",
+    "image": "https://api.dicebear.com/7.x/avataaars/svg?seed=Aryan",
+    "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ"
+  },
+  {
+    "id": 2,
+    "name": "Prachi Kumari",
+    "role": "AIIMS Delhi, 2024",
+    "content": "The biology faculty at Gurukul is exceptional. Their NCERT-focused approach made NEET preparation much more manageable and effective.",
+    "image": "https://api.dicebear.com/7.x/avataaars/svg?seed=Prachi"
+  },
+  {
+    "id": 3,
+    "name": "Dr. S.P. Singh",
+    "role": "Parent",
+    "content": "As a parent, I am highly satisfied with the discipline and academic environment at Gurukul. My daughter's confidence grew tremendously here.",
+    "image": "https://api.dicebear.com/7.x/avataaars/svg?seed=Parent1"
+  },
+  {
+    "id": 4,
+    "name": "Harsh Kumar",
+    "role": "IIT Kharagpur, 2024",
+    "content": "The test series here is very close to the actual JEE pattern. It helped me manage my time and pressure during the final exam.",
+    "image": "https://api.dicebear.com/7.x/avataaars/svg?seed=Harsh",
+    "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ"
+  }
+]

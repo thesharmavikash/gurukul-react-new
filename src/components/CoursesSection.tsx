@@ -1,6 +1,27 @@
 import { Button } from "@/components/ui/button";
 import { Clock, Users, BookOpen, ArrowRight, GraduationCap, Atom, FlaskConical, Calculator, Dna } from "lucide-react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+};
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: { duration: 0.5, ease: "easeOut" }
+  }
+};
+
 const CoursesSection = () => {
   const courses = [
     {
@@ -69,7 +90,12 @@ const CoursesSection = () => {
     <section id="courses" className="section-padding bg-background">
       <div className="container-narrow px-4">
         {/* Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center max-w-2xl mx-auto mb-16"
+        >
           <span className="text-primary font-semibold uppercase tracking-wider text-sm mb-4 block">
             Our Programs
           </span>
@@ -80,13 +106,21 @@ const CoursesSection = () => {
             Structured programs to help students excel in competitive exams and board examinations 
             with comprehensive preparation strategies.
           </p>
-        </div>
+        </motion.div>
 
         {/* Courses Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <motion.div 
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true }}
+          className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
           {courses.map((course, index) => (
-            <div
+            <motion.div
               key={index}
+              variants={itemVariants}
+              whileHover={{ y: -10, transition: { duration: 0.2 } }}
               className="bg-card rounded-2xl overflow-hidden shadow-card hover:shadow-large transition-all duration-500 group"
             >
               {/* Card Header with Gradient */}
@@ -140,9 +174,9 @@ const CoursesSection = () => {
                   </Button>
                 </Link>
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );

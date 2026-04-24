@@ -2,11 +2,14 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
+import { AnimatePresence } from "framer-motion";
+import AnimatedPage from "./components/AnimatedPage";
 import Index from "./pages/Index";
 import Gallery from "./pages/Gallery";
 import Results from "./pages/Results";
+import ResultVerification from "./pages/ResultVerification";
 import GTSEResults from "./pages/GTSEResults";
 import Course from "./pages/Course";
 import Courses from "./pages/Courses";
@@ -20,6 +23,32 @@ import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
 
+const AppRoutes = () => {
+  const location = useLocation();
+  return (
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={<AnimatedPage><Index /></AnimatedPage>} />
+        <Route path="/about" element={<AnimatedPage><About /></AnimatedPage>} />
+        <Route path="/courses" element={<AnimatedPage><Courses /></AnimatedPage>} />
+        <Route path="/gallery" element={<AnimatedPage><Gallery /></AnimatedPage>} />
+        <Route path="/results" element={<AnimatedPage><Results /></AnimatedPage>} />
+        <Route path="/verify-result" element={<AnimatedPage><ResultVerification /></AnimatedPage>} />
+        <Route path="/gtse-results" element={<AnimatedPage><GTSEResults /></AnimatedPage>} />
+        <Route path="/course/:courseId" element={<AnimatedPage><Course /></AnimatedPage>} />
+        <Route path="/blog" element={<AnimatedPage><Blog /></AnimatedPage>} />
+        <Route path="/blog/:slug" element={<AnimatedPage><Blog /></AnimatedPage>} />
+        <Route path="/faculty" element={<AnimatedPage><Faculty /></AnimatedPage>} />
+        <Route path="/faculty/:id" element={<AnimatedPage><Faculty /></AnimatedPage>} />
+        <Route path="/testimonials" element={<AnimatedPage><Testimonials /></AnimatedPage>} />
+        <Route path="/contact" element={<AnimatedPage><Contact /></AnimatedPage>} />
+        <Route path="/dashboard" element={<AnimatedPage><Dashboard /></AnimatedPage>} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </AnimatePresence>
+  );
+};
+
 const App = () => (
   <HelmetProvider>
     <QueryClientProvider client={queryClient}>
@@ -27,24 +56,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/courses" element={<Courses />} />
-            <Route path="/gallery" element={<Gallery />} />
-            <Route path="/results" element={<Results />} />
-            <Route path="/gtse-results" element={<GTSEResults />} />
-            <Route path="/course/:courseId" element={<Course />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/blog/:slug" element={<Blog />} />
-            <Route path="/faculty" element={<Faculty />} />
-            <Route path="/faculty/:id" element={<Faculty />} />
-            <Route path="/testimonials" element={<Testimonials />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <AppRoutes />
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>

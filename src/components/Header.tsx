@@ -1,12 +1,17 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Phone, Mail, MapPin } from "lucide-react";
+import { Menu, X, Phone, Mail, MapPin, Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const location = useLocation();
-  const isHomePage = location.pathname === "/";
+  const { theme, setTheme } = useTheme();
+
+  // Prevent hydration mismatch
+  useEffect(() => setMounted(true), []);
 
   const navLinks = [
     { name: "Home", href: "/" },
@@ -15,6 +20,7 @@ const Header = () => {
     { name: "Faculty", href: "/faculty" },
     { name: "GTSE Results", href: "/gtse-results" },
     { name: "Results", href: "/results" },
+    { name: "Verify Result", href: "/verify-result" },
     { name: "Gallery", href: "/gallery" },
     { name: "Blog", href: "/blog" },
     { name: "Contact", href: "/contact" },
@@ -71,18 +77,36 @@ const Header = () => {
                   {link.name}
                 </Link>
               ))}
+              
+              <button
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                className="p-2 rounded-full hover:bg-secondary transition-colors text-foreground"
+                aria-label="Toggle theme"
+              >
+                {mounted && (theme === "dark" ? <Sun className="w-5 h-5 text-accent" /> : <Moon className="w-5 h-5 text-primary" />)}
+              </button>
+
               <Button variant="hero" size="lg" asChild>
                 <a href="tel:7903113441">Call Us</a>
               </Button>
             </div>
 
-            {/* Mobile menu button */}
-            <button
-              className="xl:hidden p-2 text-foreground"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-            >
-              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
+            {/* Mobile Actions */}
+            <div className="flex xl:hidden items-center gap-4">
+              <button
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                className="p-2 rounded-full hover:bg-secondary text-foreground"
+                aria-label="Toggle theme"
+              >
+                {mounted && (theme === "dark" ? <Sun className="w-5 h-5 text-accent" /> : <Moon className="w-5 h-5 text-primary" />)}
+              </button>
+              <button
+                className="p-2 text-foreground"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+              >
+                {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
+            </div>
           </div>
 
           {/* Mobile Navigation */}
