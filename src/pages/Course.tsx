@@ -372,11 +372,16 @@ const Course = () => {
                   </div>
 
                   <div className="space-y-3">
-                    <a href="#contact">
-                      <Button variant="hero" className="w-full">
-                        Enroll Now
-                      </Button>
-                    </a>
+                    <Button 
+                      variant="hero" 
+                      className="w-full bg-[#25D366] hover:bg-[#128C7E] text-white border-none"
+                      onClick={() => {
+                        const message = `Hello Gurukul Classes, I am interested in enrolling for the *${course.title}* course. Could you please provide more details regarding admission?`;
+                        window.open(`https://wa.me/917903113441?text=${encodeURIComponent(message)}`, "_blank");
+                      }}
+                    >
+                      Enroll via WhatsApp
+                    </Button>
                     <a href="tel:7673076349">
                       <Button variant="outline" className="w-full">
                         <Phone className="w-4 h-4 mr-2" />

@@ -17,10 +17,22 @@ const ContactSection = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    const message = `*New Inquiry from Website*
+*Name:* ${formData.name}
+*Phone:* ${formData.phone}
+*Email:* ${formData.email || 'N/A'}
+*Course:* ${formData.course}
+*Message:* ${formData.message || 'N/A'}`;
+
+    const encodedMessage = encodeURIComponent(message);
+    window.open(`https://wa.me/917903113441?text=${encodedMessage}`, "_blank");
+
     toast({
-      title: "Enquiry Submitted!",
-      description: "We'll get back to you within 24 hours.",
+      title: "Opening WhatsApp...",
+      description: "Redirecting you to complete your inquiry.",
     });
+    
     setFormData({ name: "", phone: "", email: "", course: "", message: "" });
   };
 
