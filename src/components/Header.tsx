@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Phone, Mail, MapPin, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
+import ThemeCustomizer from "./ThemeCustomizer";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -78,13 +79,17 @@ const Header = () => {
                 </Link>
               ))}
               
-              <button
-                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                className="p-2 rounded-full hover:bg-secondary transition-colors text-foreground"
-                aria-label="Toggle theme"
-              >
-                {mounted && (theme === "dark" ? <Sun className="w-5 h-5 text-accent" /> : <Moon className="w-5 h-5 text-primary" />)}
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                  className="p-2 rounded-full hover:bg-secondary transition-colors text-foreground"
+                  aria-label="Toggle theme"
+                >
+                  {mounted && (theme === "dark" ? <Sun className="w-5 h-5 text-accent" /> : <Moon className="w-5 h-5 text-primary" />)}
+                </button>
+                
+                <ThemeCustomizer />
+              </div>
 
               <Button variant="hero" size="lg" asChild>
                 <a href="tel:7903113441">Call Us</a>
@@ -93,6 +98,7 @@ const Header = () => {
 
             {/* Mobile Actions */}
             <div className="flex xl:hidden items-center gap-4">
+              <ThemeCustomizer />
               <button
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
                 className="p-2 rounded-full hover:bg-secondary text-foreground"
