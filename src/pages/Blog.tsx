@@ -62,7 +62,7 @@ const parseMarkdown = (fileContent: string, slug: string): BlogPost => {
 };
 
 // Load all markdown files
-const rawPosts = import.meta.glob("/src/content/blog/*.md", { as: "raw", eager: true });
+const rawPosts = import.meta.glob("/src/content/blog/*.md", { query: "?raw", import: "default", eager: true });
 const blogPosts: BlogPost[] = Object.entries(rawPosts).map(([path, content]) => {
   const slug = path.split("/").pop()?.replace(".md", "") || "";
   return parseMarkdown(content as string, slug);
